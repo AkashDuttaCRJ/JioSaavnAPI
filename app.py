@@ -76,6 +76,30 @@ def playlist():
         }
         return jsonify(error)
 
+@app.route('/playlist/get/')
+def get_playlist():
+    lyrics = False
+    id = request.args.get('id')
+    lyrics_ = request.args.get('lyrics')
+    if lyrics_ and lyrics_.lower()!='false':
+        lyrics = True
+    if id:
+        resp = jiosaavn.get_playlist(id,lyrics)
+        if not resp:
+            error = {
+                "status": False,
+                "error": 'Invalid Playlist ID received!'
+            }
+            return jsonify(error)
+        else:
+            return jsonify(resp)
+    else:
+        error = {
+            "status": False,
+            "error": 'Playlist ID is required to get a playlist!'
+        }
+        return jsonify(error)
+
 @app.route('/album/')
 def album():
     lyrics = False
@@ -91,6 +115,30 @@ def album():
         error = {
             "status": False,
             "error":'Query is required to search albums!'
+        }
+        return jsonify(error)
+
+@app.route('/album/get/')
+def get_album():
+    lyrics = False
+    id = request.args.get('id')
+    lyrics_ = request.args.get('lyrics')
+    if lyrics_ and lyrics_.lower()!='false':
+        lyrics = True
+    if id:
+        resp = jiosaavn.get_album(id,lyrics)
+        if not resp:
+            error = {
+                "status": False,
+                "error": 'Invalid Album ID received!'
+            }
+            return jsonify(error)
+        else:
+            return jsonify(resp)
+    else:
+        error = {
+            "status": False,
+            "error": 'Album ID is required to get a album!'
         }
         return jsonify(error)
 
