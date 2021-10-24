@@ -61,3 +61,42 @@ def decrypt_url(url):
     dec_url = des_cipher.decrypt(enc_url, padmode=PAD_PKCS5).decode('utf-8')
     dec_url = dec_url.replace("_96.mp4", "_320.mp4")
     return dec_url
+
+def format_home(data):
+    data['new_albums'] = format_new_releases(data['new_albums'])
+    for item in data['new_trending']:
+        item = format_home_item(item)
+    for item in data['radio']:
+        item = format_home_item(item)
+    for item in data['artist_recos']:
+        item = format_home_item(item)
+    for item in data['promo:vx:data:56']:
+        item = format_home_item(item)
+    return data
+
+def format_home_item(data):
+    data['image'] = data['image'].replace("150x150","500x500")
+    data['title'] = format(data['title'])
+    return data
+
+def format_new_releases(data):
+    for item in data:
+        item = format_new_releases_item(item)
+    return data
+
+def format_new_releases_item(data):
+    data['image'] = data['image'].replace("150x150","500x500")
+    data['title'] = format(data['title'])
+    return data
+
+def format_charts(data):
+    for album in data:
+        album['listname'] = format(album['listname'])
+        for item in album['songs']:
+            item = format_charts_item(item)
+    return data
+
+def format_charts_item(data):
+    data['image'] = data['image'].replace("150x150","500x500")
+    data['name'] = format(data['name'])
+    return data

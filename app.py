@@ -1,5 +1,7 @@
 from flask import Flask, request, redirect, jsonify, json
 import time
+
+import requests
 import jiosaavn
 import os
 from traceback import print_exc
@@ -12,7 +14,38 @@ CORS(app)
 
 @app.route('/')
 def home():
-    return redirect("https://cyberboysumanjay.github.io/JioSaavnAPI/")
+    return jsonify(jiosaavn.get_home())
+
+@app.route('/new-releases/')
+def new_releases():
+    lang = request.args.get('lang')
+    if lang is None:
+        lang = False
+    return jsonify(jiosaavn.get_new_releases_with_lang(lang) if lang else jiosaavn.get_new_releases())
+
+@app.route('/charts/')
+def charts():
+    return jsonify(jiosaavn.get_charts())
+
+@app.route('/featured-playlists/')
+def featured_playlists():
+    lang = request.args.get('lang')
+    if lang is None:
+        lang = False
+    return jsonify(jiosaavn.get_featured_playlists(lang))
+
+@app.route('/top-artists/')
+def top_artists():
+    return jsonify(jiosaavn.get_top_artists())
+
+@app.route('/artist/')
+def artist():
+    query = request.args.get('query')
+    return jsonify(jiosaavn.get_artist_detail(query))
+
+@app.route('/top-searches/')
+def top_searches():
+    return jsonify(jiosaavn.get_top_searches())
 
 @app.route('/song/')
 def search():
@@ -172,43 +205,10 @@ def lyrics():
         return jsonify(error)
 
 
-@app.route('/result/')
+@app.route('/search/')
 def result():
-    lyrics = False
     query = request.args.get('query')
-    lyrics_ = request.args.get('lyrics')
-    if lyrics_ and lyrics_.lower()!='false':
-        lyrics = True
-
-    if 'saavn' not in query:
-        return jsonify(jiosaavn.search_for_song(query,lyrics,True))
-    try:
-        if '/song/' in query:
-            print("Song")
-            song_id = jiosaavn.get_song_id(query)
-            song = jiosaavn.get_song(song_id,lyrics)
-            return jsonify(song)
-
-        elif '/album/' in query:
-            print("Album")
-            id = jiosaavn.get_album_id(query)
-            songs = jiosaavn.get_album(id,lyrics)
-            return jsonify(songs)
-
-        elif '/playlist/' or '/featured/' in query:
-            print("Playlist")
-            id = jiosaavn.get_playlist_id(query)
-            songs = jiosaavn.get_playlist(id,lyrics)
-            return jsonify(songs)
-
-    except Exception as e:
-        print_exc()
-        error = {
-            "status": True,
-            "error":str(e)
-        }
-        return jsonify(error)
-    return None
+    return jsonify(jiosaavn.search(query))
 
 
 if __name__ == '__main__':
