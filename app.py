@@ -47,19 +47,21 @@ def artist():
 def top_searches():
     return jsonify(jiosaavn.get_top_searches())
 
+@app.route('/top-albums/')
+def top_albums():
+    year = request.args.get('year')
+    return jsonify(jiosaavn.get_top_albums(year))
+
 @app.route('/song/')
 def search():
     lyrics = False
-    songdata = True
     query = request.args.get('query')
     lyrics_ = request.args.get('lyrics')
-    songdata_ = request.args.get('songdata')
     if lyrics_ and lyrics_.lower()!='false':
         lyrics = True
-    if songdata_ and songdata_.lower()!='true':
-        songdata = False
     if query:
-        return jsonify(jiosaavn.search_for_song(query, lyrics, songdata))
+        id = jiosaavn.get_song_id(query)
+        return jsonify(jiosaavn.get_song(id, lyrics))
     else:
         error = {
             "status": False,
@@ -175,6 +177,11 @@ def get_album():
         }
         return jsonify(error)
 
+@app.route('/album/reco/')
+def recommendations():
+    id = request.args.get('id')
+    return jsonify(jiosaavn.get_recommendations(id))
+
 @app.route('/lyrics/')
 def lyrics():
     query = request.args.get('query')
@@ -210,6 +217,9 @@ def result():
     query = request.args.get('query')
     return jsonify(jiosaavn.search(query))
 
+@app.route('/endpoints/')
+def endpoints():
+    return jsonify(jiosaavn.get_endpoints())
 
 if __name__ == '__main__':
     app.debug = True

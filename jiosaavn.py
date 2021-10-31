@@ -75,6 +75,7 @@ def get_lyrics(id):
 def get_home():
     url = endpoints.homepage_url
     homepage_json = requests.get(url).text
+    homepage_json = homepage_json.replace("promo:vx:data:","promo_vx_data_")
     homepage_text = json.loads(homepage_json)
     return helper.format_home(homepage_text)
 
@@ -105,6 +106,7 @@ def get_featured_playlists(lang):
 def get_top_artists():
     url = endpoints.top_artists_url
     top_artists_json = requests.get(url).text
+    top_artists_json = top_artists_json.replace("150x150","500x500")
     top_artists_text = json.loads(top_artists_json)
     return top_artists_text
 
@@ -112,6 +114,7 @@ def get_artist_detail(query):
     url_components = query.split("/")
     artist_url = endpoints.artist_details_base_url+url_components[-1]
     artist_details_response = requests.get(artist_url).text
+    artist_details_response = artist_details_response.replace("150x150","500x500")
     artist_details_text = json.loads(artist_details_response)
     artist_details_text['bio'] = ''
     return artist_details_text
@@ -121,3 +124,20 @@ def get_top_searches():
     top_search_response = requests.get(top_search_url).text
     top_search_text = json.loads(top_search_response)
     return top_search_text
+
+def get_recommendations(id):
+    reco_url = endpoints.recommendation_url+id
+    reco_response = requests.get(reco_url).text
+    reco_response = reco_response.replace("150x150","500x500")
+    reco_text = json.loads(reco_response)
+    return reco_text
+
+def get_top_albums(year):
+    top_albums_url = endpoints.top_albums_url+year
+    top_albums_response = requests.get(top_albums_url).text
+    top_albums_response = top_albums_response.replace("150x150","500x500")
+    top_albums_text = json.loads(top_albums_response)
+    return top_albums_text
+
+def get_endpoints():
+    return endpoints.api_endpoints

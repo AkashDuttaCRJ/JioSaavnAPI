@@ -70,7 +70,7 @@ def format_home(data):
         item = format_home_item(item)
     for item in data['artist_recos']:
         item = format_home_item(item)
-    for item in data['promo:vx:data:56']:
+    for item in data['promo_vx_data_56']:
         item = format_home_item(item)
     return data
 
