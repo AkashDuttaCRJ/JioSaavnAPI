@@ -16,7 +16,7 @@ recommendation_url = "https://jiosaavn.com/api.php?__call=reco.getAlbumReco&api_
 top_albums_url = "https://jiosaavn.com/api.php?__call=search.topAlbumsoftheYear&api_version=4&_format=json&_marker=0&ctx=web6dot0&album_year="
 
 api_endpoints = {
-    "home": "/",
+    "home": "/home",
     "new_releases": "/new-releases/",
     "new_releases_with_language": "/new-releases/?lang={language}",
     "charts": "/charts/",

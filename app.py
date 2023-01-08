@@ -12,7 +12,7 @@ app.secret_key = os.environ.get("SECRET",'thankyoutonystark#weloveyou3000')
 CORS(app)
 
 
-@app.route('/')
+@app.route('/home')
 def home():
     return jsonify(jiosaavn.get_home())
 
@@ -223,4 +223,4 @@ def endpoints():
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(host='0.0.0.0', port=5000, use_reloader=True, threaded=True)
+    app.run(host='0.0.0.0', port=5100, use_reloader=True, threaded=True)
