@@ -70,8 +70,10 @@ def format_home(data):
         item = format_home_item(item)
     for item in data['artist_recos']:
         item = format_home_item(item)
-    for item in data['promo_vx_data_56']:
-        item = format_home_item(item)
+    promo_vx_data_dict = {k: v for k, v in data.items() if k.startswith('promo_vx_data_')}
+    for promo in promo_vx_data_dict:
+        for item in promo_vx_data_dict[promo]:
+            item = format_home_item(item)
     return data
 
 def format_home_item(data):
