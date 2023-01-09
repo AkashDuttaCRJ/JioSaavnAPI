@@ -12,7 +12,7 @@ app.secret_key = os.environ.get("SECRET",'thankyoutonystark#weloveyou3000')
 CORS(app)
 
 
-@app.route('/home')
+@app.route('/home/')
 def home():
     return jsonify(jiosaavn.get_home())
 

@@ -68,8 +68,9 @@ def format_home(data):
         item = format_home_item(item)
     for item in data['radio']:
         item = format_home_item(item)
-    for item in data['artist_recos']:
-        item = format_home_item(item)
+    if data['artist_recos'] is not None:
+        for item in data['artist_recos']:
+            item = format_home_item(item)
     promo_vx_data_dict = {k: v for k, v in data.items() if k.startswith('promo_vx_data_')}
     for promo in promo_vx_data_dict:
         for item in promo_vx_data_dict[promo]:
